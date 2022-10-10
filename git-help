@@ -1,0 +1,10 @@
+	cd <Pasta onde tá o projeto>	- Entra na pasta onde tá o projeto
+	git init . 			- Inicia um repositório na pasta atual
+	git add ./*			- Adiciona todos os arquivos da pasta ao repositório (é comum usar esse comando constantemente ao longo do projeto, sempre que adiocionar um arquivo ou subdiretório)
+	git commit -m "mensagem"	- Use pra fazer o primeiro commit do repositório
+	...
+	git remote add https://github.com/predomaquilare/lotusobr	- Adiciona um repositório remoto, o significado disso é meio complicado, mas você deve fazer isso pra conseguir upar seu código pro github
+	git push -u origin main		- Upa o repositório local lá pra o github
+	git commit -a 			- Realiza um commit, geralmente isso vai abrir um editor de texto, vc escreve o que voce mudou nesse commit em relação ao commit anterior, fecha o editor e o commit está feito
+	
+
