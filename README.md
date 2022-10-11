@@ -1,7 +1,7 @@
 # lotusobr
 ![](https://github.com/predomaquilare/lotusobr/blob/main/Assets/lotus-svgrepo-com.svg)
 <a href="http://ifpb.edu.br/">
-  <img src="ifpb.png" alt="logo IFPB">
+  <img src="Assets/ifpb.png" alt="logo IFPB">
 </a>
 
 
