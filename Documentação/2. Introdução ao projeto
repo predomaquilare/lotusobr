@@ -4,10 +4,11 @@ um segue faixa, a interface dos sensores para a esp é feita através do protoco
 que movem o robô (motores lego EV3) usamos drivers ponte H l293d. Implementamos também um módulo com giroscópio + acelerômetro. 
 
 
-	-	Motores e drivers l293d
-	-	Sensores de linha IR  e protocolo i2c
-	-	Display oledi2c
+	-	Motores EV3
+	-	Drivers l293d
+	-	Sensores de linha IR  e
+	-	Protocolo i2c e uart
+	-	Display oled i2c
 	-	??????
-	- 	A esp32, programação, código
-	-	Uart
+	-	A esp32, programação, códico
 	
