@@ -6,7 +6,7 @@ que movem o robô (motores lego EV3) usamos drivers ponte H l293d. Implementamos
 
 	-	Motores e drivers l293d
 	-	Sensores de linha IR  e protocolo i2c
-	-	Display lcd i2c
+	-	Display oledi2c
 	-	??????
 	- 	A esp32, programação, código
 	-	Uart
