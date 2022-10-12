@@ -2,7 +2,7 @@
 ![](https://github.com/predomaquilare/lotusobr/blob/main/Assets/lotus-svgrepo-com.svg)
 ![](https://github.com/predomaquilare/lotusobr/blob/main/Assets/logo-grel.svg)
 <a href="http://ifpb.edu.br/">
-  <img src="Assets/logo-ifpb.svg" alt="logo IFPB">
+  <img src="Assets/ifpb-logo.svg" alt="logo IFPB">
 </a>
 
 
