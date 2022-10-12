@@ -7,6 +7,7 @@
 
 
 
-Nós somos Lotus, uma equipe do GREL IFPB.Repo para esquematicos-codicos-documentos da nossa equipe. 
+Nós somos Lotus, uma equipe de robótica GREL - IFPB.
+Repositório para esquematicos,codicos e documentação da nossa equipe. 
 Se estiver perdido, entre na pasta "Documentação".
 <br/>Membros: Eduardo Araújo, G. Tomaz, Pedro Guerra, Yan Mateus. 
