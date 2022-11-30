@@ -1,7 +1,7 @@
 # Feijão com arroz do git 
 <div style="text-align:justify; line-break:auto">
 
-Obs.: Em alguns momentos o git vai pedir um usuário do github (bote o seu nome de usuário) e uma senha essa senha não é a senha da sua conta do github! Se trata de uma Personal Acess Token, conversa comigo que a gente cria uma pra você. 
+Obs.: Em alguns momentos o git vai pedir um usuário do github (bote o seu nome de usuário) e uma senha essa, senha não é a senha da sua conta do github! Se trata de uma Personal Acess Token, conversa comigo que a gente cria uma pra você. 
 <br>
 	
 	Não tenha medo do gitola, ele é um google drive dez bilhões de trilhões de vezes melhor ;) .
@@ -48,4 +48,6 @@ Obs.: Em alguns momentos o git vai pedir um usuário do github (bote o seu nome 
 <br>
  
   	Pronto, seu código já está no nosso github e todo mundo vai conseguir acessar!! O git tem muitas outras ferramentas massa, precisando a gente vai atraz.	
+
+Qualquer dúvida fala comig @2
 
