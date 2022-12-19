@@ -1,0 +1,9 @@
+4/12/2022:
+criar classe motor
+mas são 4 motores
+então seria interessante ter outro objeto
+que represente não um motor individual, mas todo o movimento do robô
+uma classe robô ?
+
+seria uma classe grande demais, iria acumular várias funções ...
+isso não é bom
