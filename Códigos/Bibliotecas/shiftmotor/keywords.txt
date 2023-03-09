@@ -1,0 +1,7 @@
+shiftmotor 		KEYWORD1
+motor			KEYWORD2
+shifto			KEYWORD2
+frente 			KEYWORD2
+re			KEYWORD2
+direita			KEYWORD2
+esquerda		KEYWORD2
