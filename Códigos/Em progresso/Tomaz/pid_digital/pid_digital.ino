@@ -1,4 +1,7 @@
 
+
+
+
 #include <bibliotecamotor.h>
 
 // mapa de hardware *******************************************************************
@@ -10,6 +13,7 @@
 //#define D8 A0
 uint8_t pinosSensores[5] = { see, se, sc, sd, sdd };
 //*************************************************************************************
+
 
 int sensorMin = 1023;
 int sensorMax = 0;
