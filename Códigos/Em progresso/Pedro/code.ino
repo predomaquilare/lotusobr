@@ -2,35 +2,51 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+
+
 //#define Esp32
 //#define Arduino
 
 
 class Motor {
   public:
-  Motor(byte *pubpins, byte sensores);
+  Motor(byte *pubpins);
   void frente(int v = 4095);
   void esquerda(int v = 4095);
   void direita(int v = 4095);
   void speedctrl(int v = 4095);
-  void PIDctrl(int pid);
+  void PIDctrl(float pid);
   void noventagrausesq();
   void noventagrausdir();
   private:
   byte *pins;
+<<<<<<< HEAD
   byte valsensors;
+=======
+>>>>>>> 7b51dfc09555ed935a0c4ad9d310cebe467d03d0
 };
 
+/*
+2 - pwm esquerdo
+4 - direita tras
+5 - direita frente
+18 - esquerda frente
+19 - esquerda tras
+23 - pwm direito
+*/
 
-
-Motor::Motor(byte *pubpins, byte sensores) {
+Motor::Motor(byte *pubpins) {
   pins = pubpins;
-  valsensors  = sensores;
   for(int i = 0; i < 4; i++) {
+
     #ifdef Esp32
-    ledcSetup(i+1, 5000, 12);
-    ledcAttachPin(pins[i], i+1);
+    pinMode(pins[i], OUTPUT);
+    ledcSetup(1, 5000, 12);
+    ledcSetup(2, 5000, 12);
+    ledcAttachPin(pins[4], 1);
+    ledcAttachPin(pins[5], 2);
     #endif
+
     #ifdef Arduino
       
     #endif
@@ -39,17 +55,17 @@ Motor::Motor(byte *pubpins, byte sensores) {
 
 void Motor::frente(int v) {
   #ifdef Esp32
-  ledcWrite(1, v);
-  ledcWrite(2, 0);
-  ledcWrite(3, v);
-  ledcWrite(4, 0);
+  digitalWrite(pins[0], 0);
+  digitalWrite(pins[1], 1);
+  digitalWrite(pins[2], 1);
+  digitalWrite(pins[3], 0);
   #endif
 
   #ifdef Arduino
-  digitalWrite(1, v);
-  digitalWrite(2, 0);
-  digitalWrite(3, v);
-  digitalWrite(4, 0);
+  digitalWrite(pins[0], 0);
+  digitalWrite(pins[1], 1);
+  digitalWrite(pins[2], 1);
+  digitalWrite(pins[3], 0);
   #endif
 }
 
@@ -57,14 +73,17 @@ void Motor::direita(int v) {
 
 
   #ifdef Esp32
-  ledcWrite(1, 0);
-  ledcWrite(2, v);
-  ledcWrite(3, v); // motor da esquerda
-  ledcWrite(4, 0);
+  digitalWrite(pins[0], 1);
+  digitalWrite(pins[1], 0);
+  digitalWrite(pins[2], 1);
+  digitalWrite(pins[3], 0);
    #endif
 
   #ifdef Arduino
-      
+  digitalWrite(pins[0], 1);
+  digitalWrite(pins[1], 0);
+  digitalWrite(pins[2], 1);
+  digitalWrite(pins[3], 0);
   #endif
 
 
@@ -72,104 +91,131 @@ void Motor::direita(int v) {
 
 void Motor::esquerda(int v) {
   #ifdef Esp32
-  ledcWrite(1, v); // motor da direita
-  ledcWrite(2, 0);
-  ledcWrite(3, 0);
-  ledcWrite(4, v);
+  digitalWrite(pins[0], 0);
+  digitalWrite(pins[1], 1);
+  digitalWrite(pins[2], 0);
+  digitalWrite(pins[3], 1);
   #endif
 
   #ifdef Arduino
-      
+  digitalWrite(pins[0], 0);
+  digitalWrite(pins[1], 1);
+  digitalWrite(pins[2], 0);
+  digitalWrite(pins[3], 1);
   #endif
 }
 
-void Motor::PIDctrl(int pid) {
-  int v = 4095*0.6;
-  int a = 0,b = 0;
+void Motor::PIDctrl(float pid) {
   
+
+  int a = 0,b = 0;
   a = v + pid;
   b = v - pid;
 
   #ifdef Esp32
+  int v = 4095*0.6;
   if(a > 4095) a = 4095;
   if(a < -4095) a = -4095;
   if(b < -4095) b = -4095;
   if(b > 4095) b = 4095;
-  ledcWrite(1, 0);
-  ledcWrite(2, 0);
-  ledcWrite(3, 0);
-  ledcWrite(4, 0);
   #endif
 
   #ifdef Arduino
+  int v = 1023*0.6;
   if(a > 1023) a = 1023;
   if(a < -1023) a = -1023;
   if(b < -1023) b = -1023;
   if(b > 1023) b = 1023;
-  
-
-
-
   #endif
 
-  // IR meuir = IR(MUX = TRUE;ANALOG = FALSE)
-  if(pid >= 0) { // vira para a direita
-    
-    if(b >= 0) {
-
-      #ifdef Esp32
-      ledcWrite(1, b); //direita
-      ledcWrite(3, a); //esquerda
-      #endif 
-
-      #ifdef Arduino
-      
-      #endif
-
-    } else {
-
-      #ifdef Esp32
-      ledcWrite(2, -b); //direita
-      ledcWrite(3, a); //esquerda
-      #endif
-
-      #ifdef Arduino
-
-      #endif
-
-    }
-  } else {  // vira para esquerda
-   
-    if(a >= 0) {
-      #ifdef Esp32
-      ledcWrite(1, b); //direita
-      ledcWrite(3, a); //esquerda
-      #endif
-
-      #ifdef Arduino
-
-      #endif
-
-    } else {
-      #ifdef Esp32
-      ledcWrite(1, b); //direita
-      ledcWrite(4, -a); //esquerda
-      #endif
-
-      #ifdef Arduino
-
-      #endif
-    }
-    
+  if(pid == 0.1) {
+    //90 graus esq
   }
+  else if(pid == -0.1) {
+    //90 graus dir
+  } else {
+    if(pid >= 0) { // vira para a direita
+      if(b >= 0) {
+        #ifdef Esp32
+        ledcWrite(1, a);
+        ledcWrite(2, b);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 0);
+        digitalWrite(pins[2], 1);
+        digitalWrite(pins[3], 0);
+        #endif 
 
-  
-  Serial.print(a);
-  Serial.print(" ");
-  Serial.print(b);
-  Serial.print(" ");
-  Serial.println(pid);
-  
+        #ifdef Arduino
+        analogWrite(pins[4], a);
+        analogWrite(pins[5], b);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 0);
+        digitalWrite(pins[2], 1);
+        digitalWrite(pins[3], 0);
+        #endif
+
+      } else {
+
+        #ifdef Esp32
+        ledcWrite(1, a);
+        ledcWrite(2, -b);
+        digitalWrite(pins[0], 1);
+        digitalWrite(pins[1], 0);
+        digitalWrite(pins[2], 1);
+        digitalWrite(pins[3], 0);
+        #endif
+
+        #ifdef Arduino
+        analogWrite(pins[4], a);
+        analogWrite(pins[5], -b);
+        digitalWrite(pins[0], 1);
+        digitalWrite(pins[1], 0);
+        digitalWrite(pins[2], 1);
+        digitalWrite(pins[3], 0);
+        #endif
+
+      }
+    } else {  // vira para esquerda
+      if(a >= 0) {
+        #ifdef Esp32
+        ledcWrite(1, b);
+        ledcWrite(2, a);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 1);
+        digitalWrite(pins[2], 0);
+        digitalWrite(pins[3], 0);
+        #endif
+
+        #ifdef Arduino
+        analogWrite(pins[4], b);
+        analogWrite(pins[5], a);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 1);
+        digitalWrite(pins[2], 0);
+        digitalWrite(pins[3], 0);
+        #endif
+
+      } else {
+        #ifdef Esp32
+        ledcWrite(1, b);
+        ledcWrite(2, -a);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 1);
+        digitalWrite(pins[2], 0);
+        digitalWrite(pins[3], 1);
+        #endif
+
+        #ifdef Arduino
+        analogWrite(pins[4], b);
+        analogWrite(pins[5], -a);
+        digitalWrite(pins[0], 0);
+        digitalWrite(pins[1], 1);
+        digitalWrite(pins[2], 0);
+        digitalWrite(pins[3], 0);
+        #endif
+      }
+    }
+  }
 }
 
 void Motor::noventagrausdir() {
@@ -287,59 +333,116 @@ byte IRline::updateIR(int debouncetime) {
   }
 */
   switch (valsensors) {
-    default:
-      error = lasterror;
-      break;
-    case 0b10000000:
-      error = 7;
-      break;
-    case 0b11000000:
-      error = 6;
-      break;
-    case 0b01000000:
-      error = 5;
-      break;
-    case 0b01100000:
-      error = 4;
-      break;
-    case 0b00100000:
-      error = 3;
-      break;
-    case 0b00110000:
-      error = 2;
-      break;
-    case 0b00010000:
-      error = 1;
-      break;
-    case 0b00011000:
-      error = 0;
-      break;
-    case 0b00001000:
-      error = 1;
-      break;
-    case 0b00001100:
-      error = -2;
-      break;
-    case 0b00000100:
-      error = -3;
-      break;
-    case 0b00000110:
-      error = -4;
-      break;
-    case 0b00000010:
-      error = -5;
-      break;
-    case 0b00000011:
-      error = -6;
-      break;
-    case 0b00000001:
-      error = -7;
-      break;
+    if(numIR == 8) {
+      default:
+        error = lasterror;
+        break;
+
+      case 0b10000000:
+        error = 7;
+        break;
+
+      case 0b11000000:
+        error = 6;
+        break;
+
+      case 0b01000000:
+        error = 5;
+        break;
+
+      case 0b01100000:
+        error = 4;
+        break;
+
+      case 0b00100000:
+        error = 3;
+        break;
+
+      case 0b00110000:
+        error = 2;
+        break;
+
+      case 0b00010000:
+        error = 1;
+        break;
+
+      case 0b00011000:
+        error = 0;
+        break;
+
+      case 0b00001000:
+        error = 1;
+        break;
+
+      case 0b00001100:
+        error = -2;
+        break;
+
+      case 0b00000100:
+        error = -3;
+        break;
+
+      case 0b00000110:
+        error = -4;
+        break;
+
+      case 0b00000010:
+        error = -5;
+        break;
+
+      case 0b00000011:
+        error = -6;
+        break;
+
+      case 0b00000001:
+        error = -7;
+        break;
+
+      case (0b11110000 || 0b11111000)
+        error = 0.1;
+        break;
+
+      case (0b00001111 || 0b00011111)
+        error = -0.1;
+        break;  
+    }
+    else if(numIR == 5) {
+      default:
+        error = lasterror;
+        break;
+      case: 0b10000
+        error = 2;
+        break;
+
+      case: 0b01000
+        error = 1;
+        break;
+
+      case: 0b00100
+        error = 0;
+        break;
+
+      case: 0b00010
+        error = -1;
+        break;
+
+      case: 0b00001
+        error = -2;
+        break;
+
+      case (0b11000 || 0b11100)
+        error = 0.1;
+        break;
+
+      case (0b00011 || 0b00111)
+        error = -0.1;
+        break;
+    }
   }
   return valsensors;
 }
 
-int IRline::PID() {
+float IRline::PID() {
   float P, I, D;
   int val = 0;
   for(int i = 0; i < 100; i++) {
@@ -362,16 +465,27 @@ int IRline::PID() {
   lasterror = error;
   if(PID > 4095) PID = 4095;
   else if(PID < -4095) PID = -4095;
-  return PID;
+  if(error == 0.1 || error == -0.1) {
+    return error;
+  } else {
+     return int(PID);
+  }
 }
 
 
-byte m[4] = {4,5,18,19};
+byte m[4] = {4,5,18,19,2,23}; // IN1 - IN2 - IN3 - IN4 - PWM1 - PWM2
+/*
+4 - direita tras
+5 - direita frente
+18 - esquerda frente
+19 - esquerda tras
+23 - pwm direita
+*/
 byte pinos[8] = { 13, 12, 14, 27, 26, 25, 33, 32 };
 
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
 IRline ir(pinos, 8);
-Motor motor(m, ir.updateIR);
+Motor motor(m);
 
 void setup() {
   Serial.begin(115200);
@@ -389,7 +503,7 @@ void setup() {
 
 void loop() {
   ir.updateIR();
-  motor.PIDctrl(ir.PID());
+  motor.PIDctrl(ir.PID(), ir.updateIR());
   int val = 0;
   for(int i = 0; i < 100; i++) {
     val = analogRead(35) + val;
