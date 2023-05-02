@@ -469,7 +469,7 @@ float IRline::PID() {
 }
 
 
-byte m[4] = {4,5,18,19};
+byte m[4] = {4,5,18,19,2,23}; // IN1 - IN2 - IN3 - IN4 - PWM1 - PWM2
 /*
 4 - direita tras
 5 - direita frente
