@@ -412,7 +412,7 @@ int IRline::PID()
   return PID;
 }
 
-byte m[4] = {4, 5, 18, 19};
+byte m[4] = {5,3, 10, 11};
 byte pinos[8] = {13, 12, 14, 27, 26, 25, 33, 32};
 
 // Adafruit_SSD1306 display(128, 64, &Wire, -1);
@@ -433,7 +433,10 @@ void setup()
 void loop()
 {
   //ir.updateIR();
-  motor.run(120,120);
+  for(int i = 0; i < 256;i++){
+    motor.run(i,i);
+    delay(100);
+  }
   //motor.PIDctrl(ir.PID());
   // Serial.println(val/100);
   /*display.clearDisplay();
