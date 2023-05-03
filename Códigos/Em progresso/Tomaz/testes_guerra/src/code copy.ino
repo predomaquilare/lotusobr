@@ -21,6 +21,7 @@ public:
 private:
   byte *pins;
   byte valsensors;
+  int max_pwm = 255;
 };
 
 Motor::Motor(byte *pubpins)
@@ -118,15 +119,14 @@ void Motor::PIDctrl(int pid)
 #endif
 
 #ifdef Arduino
-  if (a > 1023)
-    a = 1023;
-  if (a < -1023)
-    a = -1023;
-  if (b < -1023)
-    b = -1023;
-  if (b > 1023)
-    b = 1023;
-
+  if (a > max_pwm)
+    a = max_pwm;
+  if (a < -max_pwm)
+    a = -max_pwm;
+  if (b < -max_pwm)
+    b = -max_pwm;
+  if (b > max_pwm)
+    b = max_pwm;
 #endif
 
   // IR meuir = IR(MUX = TRUE;ANALOG = FALSE)
@@ -411,7 +411,7 @@ int IRline::PID()
   return PID;
 }
 
-byte m[4] = {11, 10,3, 5};
+byte m[4] = {11, 10, 3, 5};
 byte pinos[5] = {2, 4, A2, 13, 12};
 // Adafruit_SSD1306 display(128, 64, &Wire, -1);
 IRline ir(pinos, 5);
@@ -429,27 +429,29 @@ void setup()
    display.clearDisplay();*/
 }
 
+int Kp = 53,Ki,Kd = 0, error,last_error;
 void loop()
 {
-//motor.run(120,-120);
+  // motor.run(120,-120);
 
   switch (ir.updateIR())
   {
   case 0b00111:
-      motor.run(-180,180);
-      break;
+    motor.run(-180, 180);
+    break;
   case 0b10111:
     motor.run(-120, 120);
     break;
-  
+
   case 0b11101:
     motor.run(120, -120);
     break;
   case 0b11100:
-  motor.run(180,-180);
-  break;
+    motor.run(180, -180);
+    break;
   default:
     motor.run(120, 120);
   }
+  int PID = Kp * 
   Serial.println(ir.updateIR(), BIN);
 }
