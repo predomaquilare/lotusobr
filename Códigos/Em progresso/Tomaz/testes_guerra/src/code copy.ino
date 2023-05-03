@@ -412,8 +412,8 @@ int IRline::PID()
   return PID;
 }
 
-byte m[4] = {5,3, 10, 11};
-byte pinos[8] = {13, 12, 14, 27, 26, 25, 33, 32};
+byte m[4] = {5, 3, 10, 11};
+byte pinos[5] = {12, 13, A2, 4, 2};
 
 // Adafruit_SSD1306 display(128, 64, &Wire, -1);
 IRline ir(pinos, 8);
@@ -421,24 +421,30 @@ Motor motor(m);
 
 void setup()
 {
-  Serial.begin(115200);
+  PORTC = 0;
+  PORTB = 0;
+  PORTD = 0;
+  Serial.begin(9600);
+  pinMode(10,OUTPUT);
   /* if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
      Serial.println(F("falha na alocação do endereço i2c do display"));
      for(;;); // Don't proceed, loop forever
    }
    display.clearDisplay();*/
-  ir.calibrateIR();
-}
+  
+ }
 
 void loop()
 {
-  //ir.updateIR();
-  for(int i = 0; i < 256;i++){
-    motor.run(i,i);
-    delay(100);
+  for(int i = 0;i < 5; i ++){
+    Serial.println("Sensor" + String(i) + ": \t"+String(digitalRead(pinos[i])) + "\n");
   }
-  //motor.PIDctrl(ir.PID());
-  // Serial.println(val/100);
+  Serial.println("\n");
+  delay(500);
+  digitalWrite(10,HIGH);
+  delay  (1000);
+  // motor.PIDctrl(ir.PID());
+  //  Serial.println(val/100);
   /*display.clearDisplay();
   display.setTextSize(3);
   display.setTextColor(WHITE);
