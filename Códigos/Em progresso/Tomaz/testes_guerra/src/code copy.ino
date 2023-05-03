@@ -33,7 +33,7 @@ Motor::Motor(byte *pubpins)
     ledcAttachPin(pins[i], i + 1);
 #endif
 #ifdef Arduino
-
+    pinMode(pins[i], OUTPUT);
 #endif
   }
 }
@@ -306,89 +306,88 @@ byte IRline::updateIR(int debouncetime)
       pastmillis = millis();
       for (int i = 0; i < numIR; i++)
       {
-        valsensors = valsensors | (((analogRead(pins[i]) > (mid[i] * 1.1)) ? 1 : 0) << i);
+        // valsensors = valsensors | (((analogRead(pins[i]) > (mid[i] * 1.1)) ? 1 : 0) << i);
+        valsensors |= digitalRead(pins[i]) << i;
       }
     }
   }
-
-  /*
-  else {
-    if (millis() - pastmillis >= debouncetime) {
+  else
+  {
+    if (millis() - pastmillis >= debouncetime)
+    {
       pastmillis = millis();
-      for (int x = 0; x < numIR; x++) {
+      for (int x = 0; x < numIR; x++)
+      {
 
-        for (int y = 0; y < 3; y++) digitalWrite(pins[y], ci[x][y]);
+        for (int y = 0; y < 3; y++)
+          digitalWrite(pins[y], ci[x][y]);
 
-        val[x] = constrain(analogRead(muxpin), Min, Max);
+        /*val[x] = constrain(analogRead(muxpin), Min, Max);
         val[x] = map(analogRead(muxpin), Min, Max, 0, 1023);
-
+*/
       }
     }
   }
-*/
+
+  return valsensors;
+  /*byte possiblevalues[] = {0b10000, 0b11000, 0b01000, 0b01100, 0b00100, 0b00110, 0b00010, 0b00011, 0b00001};
+  int errorValues[] = {-4, -3, -2, -1, 0, 1, 2, 3, 4};
+  for (int i = 0; i < numIR * 2 - 1; i++)
+  {
+    delay(1000);
+    Serial.println("\n " + String(i) + "::" + String(errorValues[i]));
+    if (valsensors == possiblevalues[i])
+    {
+          Serial.println("\n JAAJAJAJ \n");
+    return errorValues[i];
+    }
+
+  }*/
+}
+
+int IRline::PID()
+{
   switch (valsensors)
   {
   default:
     error = lasterror;
     break;
-  case 0b10000000:
-    error = 7;
-    break;
-  case 0b11000000:
-    error = 6;
-    break;
-  case 0b01000000:
-    error = 5;
-    break;
-  case 0b01100000:
-    error = 4;
-    break;
-  case 0b00100000:
-    error = 3;
-    break;
-  case 0b00110000:
-    error = 2;
-    break;
-  case 0b00010000:
-    error = 1;
-    break;
-  case 0b00011000:
-    error = 0;
-    break;
-  case 0b00001000:
-    error = 1;
-    break;
-  case 0b00001100:
-    error = -2;
-    break;
-  case 0b00000100:
-    error = -3;
-    break;
-  case 0b00000110:
+  case 0b10000:
     error = -4;
     break;
-  case 0b00000010:
-    error = -5;
+  case 0b11000:
+    error = -3;
     break;
-  case 0b00000011:
-    error = -6;
+  case 0b01000:
+    error = -2;
     break;
-  case 0b00000001:
-    error = -7;
+  case 0b01100:
+    error = -1;
+    break;
+  case 0b00100:
+    error = 0;
+    break;
+  case 0b00110:
+    error = 1;
+    break;
+  case 0b00010:
+    error = 2;
+    break;
+  case 0b00011:
+    error = 3;
+    break;
+  case 0b00001:
+    error = 4;
     break;
   }
-  return valsensors;
-}
-
-int IRline::PID()
-{
   float P, I, D;
-  int val = 0;
+  /*int val = 0;
   for (int i = 0; i < 100; i++)
   {
     val = analogRead(35) + val;
   }
-  int Kp = (val / 100);
+  */
+  int Kp = 53;
   int Ki = 0;
   int Kd = 0;
 
@@ -412,44 +411,45 @@ int IRline::PID()
   return PID;
 }
 
-byte m[4] = {5, 3, 10, 11};
-byte pinos[5] = {12, 13, A2, 4, 2};
-
+byte m[4] = {11, 10,3, 5};
+byte pinos[5] = {2, 4, A2, 13, 12};
 // Adafruit_SSD1306 display(128, 64, &Wire, -1);
-IRline ir(pinos, 8);
+IRline ir(pinos, 5);
 Motor motor(m);
 
 void setup()
 {
-  PORTC = 0;
-  PORTB = 0;
-  PORTD = 0;
+
   Serial.begin(9600);
-  pinMode(10,OUTPUT);
+  pinMode(10, OUTPUT);
   /* if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
      Serial.println(F("falha na alocação do endereço i2c do display"));
      for(;;); // Don't proceed, loop forever
    }
    display.clearDisplay();*/
-  
- }
+}
 
 void loop()
 {
-  for(int i = 0;i < 5; i ++){
-    Serial.println("Sensor" + String(i) + ": \t"+String(digitalRead(pinos[i])) + "\n");
+//motor.run(120,-120);
+
+  switch (ir.updateIR())
+  {
+  case 0b00111:
+      motor.run(-180,180);
+      break;
+  case 0b10111:
+    motor.run(-120, 120);
+    break;
+  
+  case 0b11101:
+    motor.run(120, -120);
+    break;
+  case 0b11100:
+  motor.run(180,-180);
+  break;
+  default:
+    motor.run(120, 120);
   }
-  Serial.println("\n");
-  delay(500);
-  digitalWrite(10,HIGH);
-  delay  (1000);
-  // motor.PIDctrl(ir.PID());
-  //  Serial.println(val/100);
-  /*display.clearDisplay();
-  display.setTextSize(3);
-  display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.print(val/100);
-  display.display();
-  */
+  Serial.println(ir.updateIR(), BIN);
 }
