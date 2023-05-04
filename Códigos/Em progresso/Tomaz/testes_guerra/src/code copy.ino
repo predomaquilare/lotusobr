@@ -10,6 +10,7 @@ class Motor
 public:
   Motor(byte *pubpins);
   void run(int va = 0, int vb = 0);
+  void para();
   void frente(int v = 4095);
   void esquerda(int v = 4095);
   void direita(int v = 4095);
@@ -48,7 +49,14 @@ void Motor::run(int va = 0, int vb = 0)
   analogWrite(pins[3], vb < 0 ? -vb : 0);
 #endif
 }
-
+void Motor::para(){
+#ifdef Arduino 
+analogWrite(pins[0],0);
+analogWrite(pins[1],0);
+analogWrite(pins[2],0);
+analogWrite(pins[3],0);
+#endif
+}
 void Motor::frente(int v)
 {
 #ifdef Esp32
@@ -454,12 +462,16 @@ void loop()
   case 0b11000:
     motor.run(0, 0);
     delay(200);
-    motor.run(120,120);
-    delay(200);
-    while(ir.updateIR()!=0b11011) motor.run(120,-120);
-    motor.run(0,0);
-    while((ir.updateIR() & 0b00100)!= 1) motor.run(180,180);
-    motor.run(0,0);
+    while(ir.updateIR() != 0b11111) motor.run(100,100);
+    while((ir.updateIR() & 0b00100) != 0b00000) motor.run(100,-100);
+    motor.para();
+    delay(1000);
+    // motor.run(120,120);
+    // delay(200);
+    // while(ir.updateIR()!=0b11011) motor.run(70,-70);
+    // motor.run(0,0);
+    // while((ir.updateIR() & 0b00100)!= 0b00100) motor.run(70,70);
+    // motor.run(0,0);
     delay(10000000000000);
     break;
   default:
