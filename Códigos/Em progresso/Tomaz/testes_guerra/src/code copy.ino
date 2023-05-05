@@ -225,7 +225,7 @@ class IRline
 {
 public:
   IRline(byte *pubpins, byte pubnumIR, byte pubmuxpin = 0, bool pubmode = 1);
-  byte updateIR(int debouncetime = 0);
+  byte update(int debouncetime = 0);
   void calibrateIR(int waittime = 5000);
   void showIR();
   int PID();
@@ -304,7 +304,7 @@ void IRline::calibrateIR(int waittime)
   }
 }
 
-byte IRline::updateIR(int debouncetime)
+byte IRline::update(int debouncetime)
 {
   valsensors = 0;
   if (mode == 1)
@@ -442,17 +442,20 @@ void loop()
 {
   // motor.run(120,-120);
 
-  switch (ir.updateIR())
+  switch (ir.update())
   {
   case 0b00011:
-    motor.run(0, 0);
-    delay(10000000);
+ while((ir.update()!= 0b11111)) motor.run(70,70);
+    while((ir.update()&0b00100)!= 0b00000) motor.run(-140,140);
+    motor.para();
+    //delay(10000000000000);
+    break;
   case 0b00111:
     motor.run(-180, 180);
     break;
   case 0b10111:
     motor.run(-120, 120);
-    break;
+    break;   
   case 0b11101:
     motor.run(120, -120);
     break;
@@ -460,23 +463,14 @@ void loop()
     motor.run(180, -180);
     break;
   case 0b11000:
-    motor.run(0, 0);
-    delay(200);
-    while(ir.updateIR() != 0b11111) motor.run(100,100);
-    while((ir.updateIR() & 0b00100) != 0b00000) motor.run(100,-100);
+    while((ir.update()!= 0b11111)) motor.run(70,70);
+    while((ir.update()&0b00100)!= 0b00000) motor.run(140,-140);
     motor.para();
-    delay(1000);
-    // motor.run(120,120);
-    // delay(200);
-    // while(ir.updateIR()!=0b11011) motor.run(70,-70);
-    // motor.run(0,0);
-    // while((ir.updateIR() & 0b00100)!= 0b00100) motor.run(70,70);
-    // motor.run(0,0);
-    delay(10000000000000);
+    //delay(10000000000000);
     break;
   default:
     motor.run(70, 70);
   }
   // int PID = Kp * error
-  Serial.println(ir.updateIR(), BIN);
+  Serial.println(ir.update(), BIN);
 }

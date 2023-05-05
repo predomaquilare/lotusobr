@@ -8,29 +8,29 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "/home/ifpb/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/include",
-                "/home/ifpb/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/src",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/variants/standard",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "c:/Users/IFPB/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/include",
+                "c:/Users/IFPB/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/src",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/variants/standard",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "/home/ifpb/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/include",
-                    "/home/ifpb/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/src",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/variants/standard",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "/home/ifpb/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "c:/Users/IFPB/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/include",
+                    "c:/Users/IFPB/Documents/lotusobr/Códigos/Em progresso/Tomaz/testes_guerra/src",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/variants/standard",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/IFPB/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                     ""
                 ]
             },
@@ -45,7 +45,7 @@
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "compilerPath": "/home/ifpb/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerPath": "C:/Users/IFPB/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
             "compilerArgs": [
                 "-mmcu=atmega328p",
                 ""
