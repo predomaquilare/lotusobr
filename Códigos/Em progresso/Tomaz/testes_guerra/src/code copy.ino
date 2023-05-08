@@ -315,7 +315,7 @@ byte IRline::update(int debouncetime)
       for (int i = 0; i < numIR; i++)
       {
         // valsensors = valsensors | (((analogRead(pins[i]) > (mid[i] * 1.1)) ? 1 : 0) << i);
-        valsensors |= digitalRead(pins[i]) << i;
+        valsensors |= digitalRead(pins[i]) << (numIR - 1 - i);
       }
     }
   }
@@ -420,7 +420,7 @@ int IRline::PID()
 }
 
 byte m[4] = {11, 10, 3, 5};
-byte pinos[5] = {A2, 2, 4, 13, 12};
+byte pinos[5] = {13, 12, 8, 4, 2};
 // Adafruit_SSD1306 display(128, 64, &Wire, -1);
 IRline ir(pinos, 5);
 Motor motor(m);
@@ -467,9 +467,10 @@ void loop()
     while((ir.update()&0b00100)!= 0b00000) motor.run(140,-140);
     motor.para();
     //delay(10000000000000);
+    ;
     break;
-  default:
-    motor.run(70, 70);
+  default: ;
+    //motor.run(70, 70);
   }
   // int PID = Kp * error
   Serial.println(ir.update(), BIN);
