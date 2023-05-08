@@ -455,6 +455,8 @@ void loop()
     break;
   case 0b10111:
     motor.run(-120, 120);
+  case 0b11011:
+    motor.run(100,100);
     break;   
   case 0b11101:
     motor.run(120, -120);
